@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Крестики-нолики</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="game-view">
+    <div id="game-view-info">
+      {{ infoMessage }}
+    </div>
+    <div id="game-view-squares">
+      <div
+        v-for="(square, i) in squares"
+        v-on:click="activeGame.makeMove(i)"
+        v-bind:class="{ highlighted: square.isHighlighted }"
+        class="game-view-square">
+        {{ square.value }}
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="js/square.js"></script>
+  <script src="js/game.js"></script>
+  <script>
+    let activeGame = new Game();
+
+    let gameVue = new Vue({
+      el: '#game-view',
+      data: activeGame,
+      computed: {
+        infoMessage: function() {
+          if (this.inProgress) {
+            return "Ход " + this.currentTurn + "!";
+          }
+
+          if (this.winner) {
+            return this.winner + " победил!";
+          }
+
+          if (!this.winner && !this.inProgress) {
+            return "Ничья!";
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
